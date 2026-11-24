@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Hero embed example</title>
+<style>body { margin: 0; font-family: system-ui, sans-serif; } .after { padding: 24px 16px; }</style>
+</head>
+<body>
+<!-- The whole integration: one element and one script tag. -->
+<div id="hero"></div>
+<script type="module"
+  src="../src/window-hero.js"
+  data-title="Fresh bread, every morning."
+  data-text="A bare page that loads the hero with one script tag and data attributes."
+  data-cta-text="Order ahead"
+  data-cta-href="#order"></script>
+<div class="after" id="order">Page content continues here.</div>
+</body>
+</html>

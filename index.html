@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Window Hero</title>
+<meta name="description" content="A landing-page hero that turns the screen into a window. Head tracking runs on your device; the camera stays off until you ask.">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js">
+<style>
+  :root { --ink: #2a2019; --ink-2: #5a4a3c; --card: rgba(255, 250, 244, .62); --edge: rgba(255, 255, 255, .6); --accent: #9a4a1c; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #f6ece2; --ink-2: #d8c9ba; --card: rgba(40, 30, 23, .7); --edge: rgba(255, 255, 255, .14); --accent: #ffc98a; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink);
+    background: radial-gradient(1200px 600px at 20% 0%, #f3d9b4 0%, transparent 60%), radial-gradient(900px 500px at 90% 30%, #e8bf96 0%, transparent 60%), linear-gradient(#e9dccb, #d8c3a8);
+    background-attachment: fixed; }
+  @media (prefers-color-scheme: dark) { body { background: radial-gradient(1200px 600px at 20% 0%, #4a3223 0%, transparent 60%), linear-gradient(#2a1f19, #1d1510); } }
+  main { max-width: 60rem; margin: 0 auto; padding: 48px 16px 64px; display: grid; gap: 20px; }
+  .card { background: var(--card); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--edge); border-radius: 24px; padding: clamp(18px, 3vw, 32px); }
+  h2 { margin: 0 0 .5rem; font-size: 1.4rem; }
+  p { margin: 0 0 .8rem; color: var(--ink-2); }
+  a { color: var(--accent); }
+  code, pre { font: 14px/1.5 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+  pre { margin: 0; padding: 14px; border-radius: 14px; background: rgba(20, 14, 10, .86); color: #f6ece2; overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  footer { text-align: center; padding: 0 16px 40px; color: var(--ink-2); font-size: .9rem; }
+</style>
+</head>
+<body>
+<div id="hero"></div>
+<main>
+  <section class="card" id="how">
+    <h2>How the window works</h2>
+    <p>The 3D camera sits where your eye is and keeps looking straight at the screen. Its view is cut to the exact rectangle of the screen (an off-axis, or asymmetric, projection), so the edges of the page stay put and everything behind them shifts the way it would through real glass. Things near the frame slide a lot; the hills outside barely move.</p>
+    <p>Your eye position comes from one of four places, in this order: your face through the camera (only after you press Enable window mode), your phone's tilt, your mouse, or nothing at all if your system asks for reduced motion.</p>
+  </section>
+  <div class="grid">
+    <section class="card">
+      <h2>Privacy</h2>
+      <p>The camera is off when the page loads. Face tracking runs inside this tab using MediaPipe in WebAssembly. No video, frames or face points leave the page, nothing is recorded, and there is no analytics. Turn off camera stops the camera completely.</p>
+    </section>
+    <section class="card">
+      <h2>Drop it on a page</h2>
+      <pre><code>&lt;div id="hero"&gt;&lt;/div&gt;
+&lt;script type="module"
+  src="https://cdn.jsdelivr.net/gh/chasebuilds/window-hero@v1.0.0/src/window-hero.js"
+  data-title="Your headline"
+  data-text="One or two sentences."
+  data-cta-text="Book a call"
+  data-cta-href="/contact"&gt;&lt;/script&gt;</code></pre>
+    </section>
+  </div>
+</main>
+<footer>Built by Chase Builds. Source on <a href="https://github.com/chasebuilds/window-hero">GitHub</a>.</footer>
+<script type="module">
+  import { mount } from './src/window-hero.js';
+  const q = new URLSearchParams(location.search);
+  window.__hero = mount('#hero', {
+    eyebrow: 'Chase Builds',
+    title: 'Step up to the glass.',
+    text: 'This page is a window into a sunlit reading room. Move your mouse, tilt your phone, or turn on window mode and move your head: the room shifts like a real one.',
+    cta: { label: 'See how it works', href: '#how' },
+    motion: q.has('still') ? false : 'auto',
+    adaptive: !q.has('fixed'),
+  });
+</script>
+</body>
+</html>
