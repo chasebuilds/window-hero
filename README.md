@@ -7,7 +7,7 @@ A landing-page hero where the screen acts like a window. Behind the headline is 
 
 **Live demo: https://chasebuilds.github.io/window-hero/**
 
-![A simulated head moving in front of the window](docs/window.gif)
+![Recorded from the live demo in mouse mode: the room shifts as the pointer moves, no camera used](docs/preview.webp)
 
 The GIF is made by driving the eye position through a test hook (see [Tests](#tests)), not with a real camera.
 
@@ -57,6 +57,8 @@ const hero = mount(document.querySelector('#hero'), {
 ```
 
 There is no build step. The files in `src/` are plain ES modules; three.js r170 comes from jsDelivr at a pinned version. A bare example page is in [`examples/embed.html`](examples/embed.html).
+
+![A simulated head moving in front of the window](docs/window.gif)
 
 ## How it works
 
