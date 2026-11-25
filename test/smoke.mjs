@@ -208,10 +208,13 @@ try {
       const fire = (beta, gamma) => window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', { alpha: 0, beta, gamma }));
       fire(40, 0);
       fire(40, -20);
-      await new Promise((r) => setTimeout(r, 800));
-      return { mode: window.__hero.state.mode, x: window.__hero.state.eye.x };
+      // The eye eases toward the tilt target a little each frame, so how far it gets in a fixed
+      // time depends on the frame rate. Wait for it to arrive (or 10 s) instead of a fixed 800 ms.
+      const t0 = performance.now();
+      while (window.__hero.state.eye.x <= 0.5 && performance.now() - t0 < 10000) await new Promise((r) => setTimeout(r, 50));
+      return { mode: window.__hero.state.mode, x: window.__hero.state.eye.x, target: window.__hero.state.target?.x ?? NaN };
     });
-    check(tilt.mode === 'tilt' && tilt.x > 0.5, `phone: tilting moves the view (mode ${tilt.mode}, eye x ${tilt.x.toFixed(2)})`);
+    check(tilt.mode === 'tilt' && Math.abs(tilt.target - 1.04) < 0.01 && tilt.x > 0.5, `phone: tilting moves the view (mode ${tilt.mode}, target x ${tilt.target.toFixed(2)}, eye x ${tilt.x.toFixed(2)})`);
     check(errors.length === 0, 'phone: no console errors');
     await context.close();
   }
